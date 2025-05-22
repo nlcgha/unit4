@@ -6,8 +6,6 @@ void setup() {
   strokeWeight(0.1);
   fill(50, 50, 50);
   rect(0, 600, 1000, 400);
-  //SdrawLoop();
-  //BdrawLoop();
 }
 
 void draw() {
@@ -26,7 +24,7 @@ void truck(float x, float y, float sc) {
   scale(sc);
   body();
   wheels();
-  livery(x= random(0,10));
+  livery((int)random(3, 10));
   popMatrix();
 }
 
@@ -54,10 +52,43 @@ void body() {
   noFill();
 }
 
-void livery(float rand) {
-  for (int i=0; i<rand; i++) {
+void livery(int rand) {
+  for (int i = 0; i < rand; i++) {
     stroke(random(0, 255), random(0, 255), random(0, 255));
     fill(random(0, 255), random(0, 255), random(0, 255));
-    line(random(-45,15),random(-15,35),random(-45,15),random(-15,35));
+    line(random(-45, 15), random(-15, 35), random(-45, 15), random(-15, 35));
+  }
+}
+
+void cloud(float x, float y, float sc) {
+  pushMatrix();
+  translate(x, y);
+  scale(sc);
+  for (int i = 0; i < (int)random(8, 15); i++) {
+    float offsetX = random(-40, 40);
+    float offsetY = random(-20, 20);
+    fluffed(offsetX, offsetY, random(30, 60));
+  }
+  rainDrops((int)random(20, 40)); // Denser rain
+  popMatrix();
+}
+
+void fluffed(float x, float y, float r) {
+  pushMatrix();
+  translate(x, y);
+  noStroke();
+  float grey = random(180, 220); // Only grey tones
+  fill(grey, grey, grey, random(80, 150)); // Translucent grey
+  ellipse(0, 0, r, r);
+  popMatrix();
+}
+
+void rainDrops(int count) {
+  for (int i = 0; i < count; i++) {
+    float dropX = random(-40, 40); 
+    float dropY = random(30, 60); 
+    stroke(80);                   
+    strokeWeight(random(2, 3));   
+    line(dropX, dropY, dropX, dropY + random(40, 80));
   }
 }
