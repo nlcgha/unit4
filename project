@@ -1,0 +1,63 @@
+float sc = 1;
+
+void setup() {
+  size(1000, 1000);
+  background(255);
+  strokeWeight(0.1);
+  fill(50, 50, 50);
+  rect(0, 600, 1000, 400);
+  //SdrawLoop();
+  //BdrawLoop();
+}
+
+void draw() {
+  TdrawLoop(1);
+}
+
+void TdrawLoop(int numTrucks) {
+  for (int i = 0; i < numTrucks; i++) {
+    truck(600 + i * 120, 600, sc);
+  }
+}
+
+void truck(float x, float y, float sc) {
+  pushMatrix();
+  translate(x, y);
+  scale(sc);
+  body();
+  wheels();
+  livery(x= random(0,10));
+  popMatrix();
+}
+
+void wheels() {
+  fill(0);
+  ellipse(-30, 40, 20, 20);
+  fill(random(0, 255), random(0, 255), random(0, 255));
+  ellipse(-30, 40, 10, 10);
+  fill(0);
+  ellipse(30, 40, 20, 20);
+  fill(random(0, 255), random(0, 255), random(0, 255));
+  ellipse(30, 40, 10, 10);
+  strokeWeight(0.1);
+  noFill();
+}
+
+void body() {
+  fill(0, 0, 255);
+  noStroke();
+  rect(-50, -20, 70, 60, 6);
+  rect(15, 10, 40, 30, 6);
+  quad(15, -15, 15, 10, 50, 10, 40, -15);
+  fill(0);
+  quad(20, -10, 20, 10, 45, 10, 37, -10);
+  noFill();
+}
+
+void livery(float rand) {
+  for (int i=0; i<rand; i++) {
+    stroke(random(0, 255), random(0, 255), random(0, 255));
+    fill(random(0, 255), random(0, 255), random(0, 255));
+    line(random(-45,15),random(-15,35),random(-45,15),random(-15,35));
+  }
+}
