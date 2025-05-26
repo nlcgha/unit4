@@ -1,20 +1,55 @@
 float sc = 1;
-
 void setup() {
   size(1000, 1000);
   background(255);
+
+  //bottomrect
   strokeWeight(0.1);
   fill(50, 50, 50);
   rect(0, 600, 1000, 400);
-}
 
-void draw() {
-  TdrawLoop(1);
-}
+  //toprect
+  strokeWeight(0.1);
+  fill(0);
+  rect(0, 0, 1000, 600);
 
-void TdrawLoop(int numTrucks) {
-  for (int i = 0; i < numTrucks; i++) {
-    truck(600 + i * 120, 600, sc);
+  //roadlines
+  strokeWeight(5);
+  stroke(247, 181, 0);
+  line(100, 700, 300, 700);
+  line(400, 700, 600, 700);
+  line(700, 700, 900, 700);
+  line(200, 900, 400, 900);
+  line(500, 900, 700, 900);
+  line(800, 900, 1000, 900);
+  line(0, 900, 100, 900);
+
+  //whitelane
+  strokeWeight(3);
+  stroke(255);
+  line(0, 800, 1000, 800);
+
+  //trucks
+  for (int l = 0; l < 4; l++) {
+    float y = 650 + l * 100;
+    for (int i = 0; i < 4; i++) {
+      float x = 100 + i * 300 + i * 50;
+      truck(x, y, sc);
+    }
+  }
+
+  //APTS
+  for (int i = 0; i < 3; i++) {
+    float x = i * 300;
+    float y = 600;
+    APTS(x, y, 1.2);
+  }
+
+  //clouds
+  for (int i = 0; i <10; i++) {
+    float x = 100 + i * 150;
+    float y = 300;
+    cloud(x, y, 1.35);
   }
 }
 
@@ -24,18 +59,19 @@ void truck(float x, float y, float sc) {
   scale(sc);
   body();
   wheels();
-  livery((int)random(3, 10));
+  liveryLine(random(5, 10));
+  liveryDots(random(5, 10));
   popMatrix();
 }
 
 void wheels() {
   fill(0);
   ellipse(-30, 40, 20, 20);
-  fill(random(0, 255), random(0, 255), random(0, 255));
+  fill(255);
   ellipse(-30, 40, 10, 10);
   fill(0);
   ellipse(30, 40, 20, 20);
-  fill(random(0, 255), random(0, 255), random(0, 255));
+  fill(255);
   ellipse(30, 40, 10, 10);
   strokeWeight(0.1);
   noFill();
@@ -52,11 +88,21 @@ void body() {
   noFill();
 }
 
-void livery(int rand) {
-  for (int i = 0; i < rand; i++) {
+void liveryLine(float count) {
+  for (int i = 0; i < count; i++) {
+    strokeWeight(5);
     stroke(random(0, 255), random(0, 255), random(0, 255));
     fill(random(0, 255), random(0, 255), random(0, 255));
-    line(random(-45, 15), random(-15, 35), random(-45, 15), random(-15, 35));
+    line(random(-45, -10), random(-15, 25), random(-45, -10), random(-15, 25));
+  }
+}
+
+void liveryDots(float count) {
+  for (int i = 0; i < count; i++) {
+    strokeWeight(5);
+    stroke(random(0, 255), random(0, 255), random(0, 255));
+    fill(random(0, 255), random(0, 255), random(0, 255));
+    point(random(-5, 15), random(-15, 25));
   }
 }
 
@@ -64,12 +110,12 @@ void cloud(float x, float y, float sc) {
   pushMatrix();
   translate(x, y);
   scale(sc);
-  for (int i = 0; i < (int)random(8, 15); i++) {
-    float offsetX = random(-40, 40);
-    float offsetY = random(-20, 20);
-    fluffed(offsetX, offsetY, random(30, 60));
+  for (int i = 0; i < random(8, 15); i++) {
+    float oX = random(-40, 40);
+    float oY = random(-20, 20);
+    fluffed(oX, oY, random(30, 60));
   }
-  rainDrops((int)random(20, 40)); // Denser rain
+  rainDrops(random(15, 30));
   popMatrix();
 }
 
@@ -77,18 +123,56 @@ void fluffed(float x, float y, float r) {
   pushMatrix();
   translate(x, y);
   noStroke();
-  float grey = random(180, 220); // Only grey tones
-  fill(grey, grey, grey, random(80, 150)); // Translucent grey
+  fill(random(200, 240), random(200, 240), random(200, 240), random(80, 150));
   ellipse(0, 0, r, r);
   popMatrix();
 }
 
-void rainDrops(int count) {
+void rainDrops(float count) {
   for (int i = 0; i < count; i++) {
-    float dropX = random(-40, 40); 
-    float dropY = random(30, 60); 
-    stroke(80);                   
-    strokeWeight(random(2, 3));   
-    line(dropX, dropY, dropX, dropY + random(40, 80));
+    float dX = random(-45, 45);
+    float dY = random(20, 60);
+    stroke(100, 100, 255, random(120, 200));
+    strokeWeight(random(1, 2));
+    line(dX, dY, dX, dY + random(30, 70));
   }
+}
+
+void APTS(float x, float y, float sc) {
+  pushMatrix();
+  translate(x, y);
+  scale(sc);
+  for (int i = 0; i < 8; i++) {
+    float bX = i * 45;
+    float bH = random(80, 160);
+    float w = random(40, 50);
+    base(bX, -bH, bH, w);
+    windows(bX, -bH, w, bH);
+  }
+  popMatrix();
+}
+
+void base(float x, float y, float h, float w) {
+  pushMatrix();
+  translate(x, y);
+  noStroke();
+  fill(random(80, 180));
+  rect(0, 0, w, h);
+  popMatrix();
+}
+
+void windows(float x, float y, float w, float h) {
+  pushMatrix();
+  translate(x, y);
+  fill(255, 255, 100);
+  int rs = (int)h / 20;
+  int cs = (int)w / 15;
+  for (int i = 1; i < rs; i++) {
+    for (int z = 1; z < cs; z++) {
+      if (random(1) > 0.3) {
+        rect(z * 10, i * 20, 5, 10);
+      }
+    }
+  }
+  popMatrix();
 }
